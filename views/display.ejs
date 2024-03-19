@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Data Display</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
+  <link rel="icon" href="logo.jpeg" style="border-radius: 25px;">
+  <style>
+    
+    body{
+      background-color: rgb(242, 187, 115);
+    }
+    #paidCheckbox{
+      width: 20px;
+      height: 20px;
+    }
+    #notPaidCheckbox{
+      width: 20px;
+      height: 20px;
+    }
+    #paidCheckbox1{
+      width: 20px;
+      height: 20px;
+    }
+    #notPaidCheckbox1,#KPMG{
+      width: 20px;
+      height: 20px;
+    }
+    #dropdownOptions{
+      height: 48px;
+      border-radius: 20px;
+    }
+    .paid {
+      background-color: green;
+      color: white;
+      border-radius: 10px;
+    }
+
+    .not-paid {
+      background-color: red;
+      color: white;
+      border-radius: 10px;
+    }
+
+
+  </style>
+</head>
+<body>
+  <h1 class="text-center"><i>Time Details</i></h1>
+  <div class="w-25 ms-5 mb-3">
+    <select class="form-select" id="monthDropdown" required >
+      <option selected disabled value="March">March</option>
+      <option value="January">January</option>
+      <option value="February">February</option>
+      <option value="March">March</option>
+      <option value="April">April</option>
+      <option value="May">May</option>
+      <option value="June">June</option>
+      <option value="July">July</option>
+      <option value="August">August</option>
+      <option value="September">September</option>
+      <option value="October">October</option>
+      <option value="November">November</option>
+      <option value="December">December</option>
+    </select>
+  </div>
+    <div class="ms-5 d-flex">
+      <!--<input type="checkbox" class="form-check-input me-5" id="paidCheckbox1" onchange="filterDocuments1()"> <b>All Paid Details</b>
+      <input type="checkbox" class="form-check-input me-5" id="notPaidCheckbox1" onchange="filterDocuments1()"> <b>All Due Details</b>-->
+      <input type="radio" name="radio-buttons" class="form-check-input me-1" id="KPMG" onchange="kpmg()"> <b class="me-3">KPMG</b>
+      <input type="radio" name="radio-buttons" class="form-check-input me-1" id="RIZING" onchange="RIZING()"> <b class="me-3">RIZING</b>
+      <input type="radio" name="radio-buttons" class="form-check-input me-1" id="ABEAM" onchange="ABEAM()"> <b class="me-3">ABEAM</b><br>
+      <input type="radio" name="radio-buttons" class="form-check-input me-1" id="SYNLOG" onchange="SYNLOG()"> <b class="me-3">SYNLOG</b><br>
+      <input type="radio" name="radio-buttons" class="form-check-input me-1" id="IC" onchange="IC()"> <b class="me-3">IC</b><br>
+      <input type="radio" name="radio-buttons" class="form-check-input me-1" id="BIRLASOFT" onchange="BIRLASOFT()"> <b class="me-3">BIRLASOFT</b><br>
+      <input type="radio" name="radio-buttons" class="form-check-input me-1" id="HGC" onchange="HGC()"> <b class="me-3">HGC</b><br>
+      <input type="radio" name="radio-buttons" class="form-check-input me-1" id="ASTA" onchange="ASTA()"> <b class="me-3">ASTA</b><br>
+      <input type="radio" name="radio-buttons" class="form-check-input me-1" id="WIPRO" onchange="WIPRO()"> <b class="me-3">WIPRO</b><br>
+      <input type="radio" name="radio-buttons" class="form-check-input me-1" id="RADIENT" onchange="RADIENT()"> <b class="me-3">RADIENT</b><br>
+      <input type="radio" name="radio-buttons" class="form-check-input me-1" id="KAISA" onchange="KAISA()"> <b class="me-3">KAISA</b><br>
+      <input type="radio" name="radio-buttons" class="form-check-input me-1" id="AITEK" onchange="AITEK()"> <b class="me-3">AITEK</b><br>
+      <input type="radio" name="radio-buttons" class="form-check-input me-1" id="SONATA" onchange="SONATA()"> <b class="me-3">SONATA</b><br>
+      <input type="radio" name="radio-buttons" class="form-check-input me-1" id="INFOSYS" onchange="INFOSYS()"> <b class="me-3">INFOSYS</b><br>
+    </div>
+  <% data.forEach(entry => { %>
+    <div id="<%= entry._id %>" >
+        <div class="row mx-3 my-3">
+          <div class="col">
+            <div class="card">
+              <div class="card-body d-flex">
+                <p class="card-text me-3"><b><i>Company Name: </i></b><%= entry.cn %></p>
+                <p class="card-text me-3"><b><i>Name: </i></b><%= entry.name %></p>
+                <p class="card-text me-3 <%= entry.paymentStatus === 'Paid' ? 'paid' : 'not-paid' %>"><b><i>Payment Status: </i></b><%= entry.paymentStatus %></p>
+                <p class="card-text me-3"><b><i>Month: </i></b><%= entry.month %></p>
+                <p class="card-text me-3"><b><i>Worked Days: </i></b><%= entry.workedDays %></p>
+                <p class="card-text me-3"><b><i>Paid By: </i></b><%= entry.paidBy %></p>
+                <p class="card-text me-3"><b><i>Payment Date: </i></b><%= entry.payDate %></p>
+                <p class="card-text me-3"><b><i>Remarks: </i></b><%= entry.remarks %></p>
+                <a><button onclick="enableEdit('<%= entry._id %>')" class="btn btn-primary me-2 "><b><i>Edit</i></b></button></a>
+                <button onclick="deleteEntry('<%= entry._id %>')" class="btn btn-danger me-2"><b><i>Delete</i></b></button>
+                <button onclick="duplicateEntry('<%= entry._id %>')" class="btn btn-success me-2"><b><i>Duplicate</i></b></button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div id="searchResults"></div>
+          <form id="form-<%= entry._id %>" onsubmit="save('<%= entry._id %>'); return false;" style="display:none;" class="card mx-4 my-4 save p-3">
+            <label for="cn-"><b><i>Company Name </i></b></label>
+            <input type="text" id="cn-<%= entry._id %>" value="<%= entry.cn %>" required class="form-control">
+            <br>
+            <label for="month-"><b><i>Month: </i></b></label>
+            <input type="text" id="month-<%= entry._id %>" value="<%= entry.month %>" class="form-control" required>
+            <br>
+            <label for="name-"><b><i>Name: </i></b></label>
+            <input type="text" id="name-<%= entry._id %>" value="<%= entry.name %>" class="form-control" required>
+            <br>
+            <label for="workedDays-"><b><i>Worked Days: </i></b></label>
+            <input type="text" id="workedDays-<%= entry._id %>" value="<%= entry.workedDays %>" class="form-control" required>
+            <br>
+            <label for="paidBy-"><b><i>Paid By </i></b></label>
+            <input type="text" id="paidBy-<%= entry._id %>" value="<%= entry.paidBy %>" class="form-control" required>
+            <br>
+            <label for="paymentStatus-"><b><i>Payment Status: </i></b></label>
+            <select id="paymentStatus-<%= entry._id %>" class="form-control" required>
+              <option value="Paid" <%= entry.paymentStatus === 'Paid' ? 'selected' : '' %>>Paid</option>
+              <option value="Not Paid" <%= entry.paymentStatus === 'Not Paid' ? 'selected' : '' %>>Not Paid</option>
+            </select>
+            <br>
+            <label for="payDate-"><b><i>Payment Date: </i></b></label>
+            <input type="text" id="payDate-<%= entry._id %>" value="<%= entry.payDate %>" class="form-control" required>
+            <br>
+            <label for="remarks-"><b><i>Remarks: </i></b></label>
+            <input type="text" id="remarks-<%= entry._id %>" value="<%= entry.remarks %>" class="form-control">
+            <br>
+            <button type="submit" class="btn btn-success"><b><i>Save</i></b></button>
+          </form>
+    </div>
+  <% }) %>
+  <script>
+    function enableEdit(id) {
+      const entryDiv = document.getElementById(id);
+      const editButton = entryDiv.querySelector('button');
+      const form = document.getElementById('form-' + id);
+      editButton.style.display = 'none';
+      form.style.display = 'block';
+    }
+
+    async function save(id) {
+      const newcn = document.getElementById('cn-' + id).value;
+      const newmonth = document.getElementById('month-' + id).value;
+      const newname = document.getElementById('name-' + id).value;
+      const newworkedDays = document.getElementById('workedDays-'+id).value;
+      const newpaidBy = document.getElementById('paidBy-' + id).value;
+      const newpaymentStatus = document.getElementById('paymentStatus-' + id).value;
+      const newpayDate = document.getElementById('payDate-' + id).value;
+      const newremarks = document.getElementById('remarks-'+id).value;
+
+      const response = await fetch(`/update/${id}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          cn: newcn,
+          month: newmonth,
+          name: newname,
+          workedDays: newworkedDays,
+          paymentStatus: newpaymentStatus,
+          paidBy: newpaidBy,
+          payDate: newpayDate,
+          remarks: newremarks,
+        }),
+      });
+      window.location.reload();
+    }
+    /*function filterDocuments() {
+      const paidCheckbox = document.getElementById('paidCheckbox');
+      const notPaidCheckbox = document.getElementById('notPaidCheckbox');
+      const dropdown = document.getElementById('dropdownOptions');
+      const allDocuments = document.querySelectorAll('.row');
+      const selectedOption = dropdown.value;
+
+      allDocuments.forEach(document => {
+        const partyName = document.querySelector('.card-text:nth-child(2)').textContent.split(':')[1].trim();
+        const status = document.querySelector('.card-text:nth-child(4)').textContent.split(':')[1].trim();
+        const shouldDisplay = (partyName === selectedOption) && ((paidCheckbox.checked && status === 'Paid') || (notPaidCheckbox.checked && status !== 'Paid'));
+        document.style.display = shouldDisplay ? 'block' : 'none';
+        });
+    }*/
+   function filterDocuments1() {
+      const paidCheckbox = document.getElementById('paidCheckbox1');
+      const notPaidCheckbox = document.getElementById('notPaidCheckbox1');
+      const allDocuments = document.querySelectorAll('.row');
+      
+      allDocuments.forEach(document => {
+        const paymentStatus = document.querySelector('.card-text:nth-child(3)').textContent.split(':')[1].trim();
+
+        if ((paidCheckbox.checked && paymentStatus === 'Paid') || (notPaidCheckbox.checked && paymentStatus !== 'Paid')) {
+          document.style.display = 'block';
+        } else {
+          document.style.display = 'none';
+        }
+      });
+    }
+    
+    function kpmg() {
+          const kpmg = document.getElementById('KPMG');
+          const monthDropdown = document.getElementById('monthDropdown');
+          const selectedMonth = monthDropdown.value;
+          const allDocuments = document.querySelectorAll('.row');
+
+          allDocuments.forEach(document => {
+              const compName = document.querySelector('.card-text:nth-child(1)').textContent.split(':')[1].trim();
+              const compMonth = document.querySelector('.card-text:nth-child(4)').textContent.split(':')[1].trim(); // Assuming month is in the second child
+
+              if (
+                  (kpmg.checked && compName === "KPMG") &&
+                  (selectedMonth === "all" || compMonth === selectedMonth)
+              ) {
+                  document.style.display = 'block';
+              } else {
+                  document.style.display = 'none';
+              }
+          });
+        }
+    /*function kpmg() {
+      const kpmg = document.getElementById('KPMG');
+      const allDocuments = document.querySelectorAll('.row');
+      allDocuments.forEach(document => {
+        const compName = document.querySelector('.card-text:nth-child(1)').textContent.split(':')[1].trim();
+        console.log(compName);
+        if ((kpmg.checked && compName === "KPMG")) {
+          document.style.display = 'block';
+        } else {
+          document.style.display = 'none';
+        }
+      });
+    }*/
+    function RIZING() {
+      const RIZING = document.getElementById('RIZING');
+          const monthDropdown = document.getElementById('monthDropdown');
+          const selectedMonth = monthDropdown.value;
+          const allDocuments = document.querySelectorAll('.row');
+
+          allDocuments.forEach(document => {
+              const compName = document.querySelector('.card-text:nth-child(1)').textContent.split(':')[1].trim();
+              const compMonth = document.querySelector('.card-text:nth-child(4)').textContent.split(':')[1].trim(); // Assuming month is in the second child
+
+              if (
+                  (RIZING.checked && compName === "RIZING") &&
+                  (selectedMonth === "all" || compMonth === selectedMonth)
+              ) {
+                  document.style.display = 'block';
+              } else {
+                  document.style.display = 'none';
+              }
+          });
+    }
+    function IC() {
+      const IC = document.getElementById('IC');
+          const monthDropdown = document.getElementById('monthDropdown');
+          const selectedMonth = monthDropdown.value;
+          const allDocuments = document.querySelectorAll('.row');
+
+          allDocuments.forEach(document => {
+              const compName = document.querySelector('.card-text:nth-child(1)').textContent.split(':')[1].trim();
+              const compMonth = document.querySelector('.card-text:nth-child(4)').textContent.split(':')[1].trim(); // Assuming month is in the second child
+
+              if (
+                  (IC.checked && compName === "IC") &&
+                  (selectedMonth === "all" || compMonth === selectedMonth)
+              ) {
+                  document.style.display = 'block';
+              } else {
+                  document.style.display = 'none';
+              }
+          });
+    }
+    function ABEAM() {
+      const ABEAM = document.getElementById('ABEAM');
+          const monthDropdown = document.getElementById('monthDropdown');
+          const selectedMonth = monthDropdown.value;
+          const allDocuments = document.querySelectorAll('.row');
+
+          allDocuments.forEach(document => {
+              const compName = document.querySelector('.card-text:nth-child(1)').textContent.split(':')[1].trim();
+              const compMonth = document.querySelector('.card-text:nth-child(4)').textContent.split(':')[1].trim(); // Assuming month is in the second child
+
+              if (
+                  (ABEAM.checked && compName === "ABEAM") &&
+                  (selectedMonth === "all" || compMonth === selectedMonth)
+              ) {
+                  document.style.display = 'block';
+              } else {
+                  document.style.display = 'none';
+              }
+          });
+    }
+    function BIRLASOFT() {
+      const BIRLASOFT = document.getElementById('BIRLASOFT');
+          const monthDropdown = document.getElementById('monthDropdown');
+          const selectedMonth = monthDropdown.value;
+          const allDocuments = document.querySelectorAll('.row');
+
+          allDocuments.forEach(document => {
+              const compName = document.querySelector('.card-text:nth-child(1)').textContent.split(':')[1].trim();
+              const compMonth = document.querySelector('.card-text:nth-child(4)').textContent.split(':')[1].trim(); // Assuming month is in the second child
+
+              if (
+                  (BIRLASOFT.checked && compName === "BIRLASOFT") &&
+                  (selectedMonth === "all" || compMonth === selectedMonth)
+              ) {
+                  document.style.display = 'block';
+              } else {
+                  document.style.display = 'none';
+              }
+          });
+    }
+    function SYNLOG() {
+      const SYNLOG = document.getElementById('SYNLOG');
+          const monthDropdown = document.getElementById('monthDropdown');
+          const selectedMonth = monthDropdown.value;
+          const allDocuments = document.querySelectorAll('.row');
+
+          allDocuments.forEach(document => {
+              const compName = document.querySelector('.card-text:nth-child(1)').textContent.split(':')[1].trim();
+              const compMonth = document.querySelector('.card-text:nth-child(4)').textContent.split(':')[1].trim(); // Assuming month is in the second child
+
+              if (
+                  (SYNLOG.checked && compName === "SYNLOG") &&
+                  (selectedMonth === "all" || compMonth === selectedMonth)
+              ) {
+                  document.style.display = 'block';
+              } else {
+                  document.style.display = 'none';
+              }
+          });
+    }
+    function HGC() {
+      const HGC = document.getElementById('HGC');
+          const monthDropdown = document.getElementById('monthDropdown');
+          const selectedMonth = monthDropdown.value;
+          const allDocuments = document.querySelectorAll('.row');
+
+          allDocuments.forEach(document => {
+              const compName = document.querySelector('.card-text:nth-child(1)').textContent.split(':')[1].trim();
+              const compMonth = document.querySelector('.card-text:nth-child(4)').textContent.split(':')[1].trim(); // Assuming month is in the second child
+
+              if (
+                  (HGC.checked && compName === "HGC") &&
+                  (selectedMonth === "all" || compMonth === selectedMonth)
+              ) {
+                  document.style.display = 'block';
+              } else {
+                  document.style.display = 'none';
+              }
+          });
+    }
+    function ASTA() {
+      const ASTA = document.getElementById('ASTA');
+          const monthDropdown = document.getElementById('monthDropdown');
+          const selectedMonth = monthDropdown.value;
+          const allDocuments = document.querySelectorAll('.row');
+
+          allDocuments.forEach(document => {
+              const compName = document.querySelector('.card-text:nth-child(1)').textContent.split(':')[1].trim();
+              const compMonth = document.querySelector('.card-text:nth-child(4)').textContent.split(':')[1].trim(); // Assuming month is in the second child
+
+              if (
+                  (ASTA.checked && compName === "ASTA") &&
+                  (selectedMonth === "all" || compMonth === selectedMonth)
+              ) {
+                  document.style.display = 'block';
+              } else {
+                  document.style.display = 'none';
+              }
+          });
+    }
+    function WIPRO() {
+      const WIPRO = document.getElementById('WIPRO');
+          const monthDropdown = document.getElementById('monthDropdown');
+          const selectedMonth = monthDropdown.value;
+          const allDocuments = document.querySelectorAll('.row');
+
+          allDocuments.forEach(document => {
+              const compName = document.querySelector('.card-text:nth-child(1)').textContent.split(':')[1].trim();
+              const compMonth = document.querySelector('.card-text:nth-child(4)').textContent.split(':')[1].trim(); // Assuming month is in the second child
+
+              if (
+                  (WIPRO.checked && compName === "WIPRO") &&
+                  (selectedMonth === "all" || compMonth === selectedMonth)
+              ) {
+                  document.style.display = 'block';
+              } else {
+                  document.style.display = 'none';
+              }
+          });
+    }
+    function RADIENT() {
+      const RADIENT = document.getElementById('RADIENT');
+          const monthDropdown = document.getElementById('monthDropdown');
+          const selectedMonth = monthDropdown.value;
+          const allDocuments = document.querySelectorAll('.row');
+
+          allDocuments.forEach(document => {
+              const compName = document.querySelector('.card-text:nth-child(1)').textContent.split(':')[1].trim();
+              const compMonth = document.querySelector('.card-text:nth-child(4)').textContent.split(':')[1].trim(); // Assuming month is in the second child
+
+              if (
+                  (RADIENT.checked && compName === "RADIENT") &&
+                  (selectedMonth === "all" || compMonth === selectedMonth)
+              ) {
+                  document.style.display = 'block';
+              } else {
+                  document.style.display = 'none';
+              }
+          });
+    }
+    function KAISA() {
+      const KAISA = document.getElementById('KAISA');
+          const monthDropdown = document.getElementById('monthDropdown');
+          const selectedMonth = monthDropdown.value;
+          const allDocuments = document.querySelectorAll('.row');
+
+          allDocuments.forEach(document => {
+              const compName = document.querySelector('.card-text:nth-child(1)').textContent.split(':')[1].trim();
+              const compMonth = document.querySelector('.card-text:nth-child(4)').textContent.split(':')[1].trim(); // Assuming month is in the second child
+
+              if (
+                  (KAISA.checked && compName === "KAISA") &&
+                  (selectedMonth === "all" || compMonth === selectedMonth)
+              ) {
+                  document.style.display = 'block';
+              } else {
+                  document.style.display = 'none';
+              }
+          });
+    }
+    function AITEK() {
+      const AITEK = document.getElementById('AITEK');
+          const monthDropdown = document.getElementById('monthDropdown');
+          const selectedMonth = monthDropdown.value;
+          const allDocuments = document.querySelectorAll('.row');
+
+          allDocuments.forEach(document => {
+              const compName = document.querySelector('.card-text:nth-child(1)').textContent.split(':')[1].trim();
+              const compMonth = document.querySelector('.card-text:nth-child(4)').textContent.split(':')[1].trim(); // Assuming month is in the second child
+
+              if (
+                  (AITEK.checked && compName === "AITEK") &&
+                  (selectedMonth === "all" || compMonth === selectedMonth)
+              ) {
+                  document.style.display = 'block';
+              } else {
+                  document.style.display = 'none';
+              }
+          });
+    }
+    function SONATA() {
+      const SONATA = document.getElementById('SONATA');
+          const monthDropdown = document.getElementById('monthDropdown');
+          const selectedMonth = monthDropdown.value;
+          const allDocuments = document.querySelectorAll('.row');
+
+          allDocuments.forEach(document => {
+              const compName = document.querySelector('.card-text:nth-child(1)').textContent.split(':')[1].trim();
+              const compMonth = document.querySelector('.card-text:nth-child(4)').textContent.split(':')[1].trim(); // Assuming month is in the second child
+
+              if (
+                  (SONATA.checked && compName === "SONATA") &&
+                  (selectedMonth === "all" || compMonth === selectedMonth)
+              ) {
+                  document.style.display = 'block';
+              } else {
+                  document.style.display = 'none';
+              }
+          });
+    }
+    function INFOSYS() {
+      const INFOSYS = document.getElementById('INFOSYS');
+          const monthDropdown = document.getElementById('monthDropdown');
+          const selectedMonth = monthDropdown.value;
+          const allDocuments = document.querySelectorAll('.row');
+
+          allDocuments.forEach(document => {
+              const compName = document.querySelector('.card-text:nth-child(1)').textContent.split(':')[1].trim();
+              const compMonth = document.querySelector('.card-text:nth-child(4)').textContent.split(':')[1].trim(); // Assuming month is in the second child
+
+              if (
+                  (INFOSYS.checked && compName === "INFOSYS") &&
+                  (selectedMonth === "all" || compMonth === selectedMonth)
+              ) {
+                  document.style.display = 'block';
+              } else {
+                  document.style.display = 'none';
+              }
+          });
+    }
+</script>
+<script>
+  // Add JavaScript functions for delete and duplicate
+  async function deleteEntry(entryId) {
+      try {
+          const response = await fetch(`/entries/${entryId}`, {
+              method: 'DELETE',
+          });
+          const data = await response.json();
+          console.log(data.message);
+          window.location.reload();
+          // Refresh the page or update the UI as needed
+      } catch (error) {
+          console.error('Error deleting entry:', error);
+      }
+  }
+
+  async function duplicateEntry(entryId) {
+  try {
+    const response = await fetch(`/entries/${entryId}/duplicate`, {
+      method: 'POST',
+    });
+    const data = await response.json();
+    console.log(data.message);
+    //window.location.reload();
+    // Refresh the page or update the UI as needed
+  } catch (error) {
+    console.error('Error duplicating entry:', error);
+  }
+}
+
+</script>
+</body>
+</html>
